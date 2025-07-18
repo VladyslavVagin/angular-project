@@ -12,6 +12,7 @@ import { firstValueFrom } from 'rxjs';
 export class ByCapitalPageComponent {
   countryService = inject(CountryService);
   query = signal('');
+  
   countryResource = resource({
     request: () => ({ query: this.query() }),
     loader: async({ request }) => {
