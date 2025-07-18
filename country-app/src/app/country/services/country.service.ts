@@ -1,5 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { RestCountry } from '../interfaces/rest-countries.interface';
+import type { Country } from '../interfaces/country.interface';
+import { CountryMapper } from '../mappers/country.mapper';
 
 const API_URL = 'https://restcountries.com/v3.1';
 
@@ -9,8 +13,10 @@ const API_URL = 'https://restcountries.com/v3.1';
 export class CountryService {
   private http = inject(HttpClient);
 
-  searchByCapital(query: string) {
+  searchByCapital(query: string): Observable<Country[]> {
     query = query.trim().toLowerCase();
-    return this.http.get(`${API_URL}/capital/${query}`);
+    return this.http.get<RestCountry[]>(`${API_URL}/capital/${query}`).pipe(
+      map(resp => CountryMapper.mapRestCountryArrayToCountryArray(resp))
+    );
   }
 }
