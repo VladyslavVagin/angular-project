@@ -1,2 +1,12 @@
-<country-search-input placeholder="Buscar por region" />
-<country-list [countries]="[]"/>
+<h1 class="text-2xl">Por región</h1>
+<h2 class="text-lg">Seleccione una región</h2>
+<section class="row mt-2">
+    <div class="flex-col">
+        @for (region of regions; track region) {
+        <button [class.btn-primary]="selectedRegion() === region" (click)="selectedRegion.set(region)"
+            class="btn btn-outline mr-2 w-[100px]">{{region}}</button>
+        }
+    </div>
+</section>
+<country-list [isLoading]="regionResource.isLoading()" [isEmpty]="regionResource.value()?.length === 0"
+  [errorMessage]="regionResource.error()" [countries]="regionResource.value() ?? []" />
